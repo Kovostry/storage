@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <title>Storage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Облік товарів</title>
+    <!-- Підключаємо Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -69,40 +72,33 @@
             border-radius: 10px;
             border: 1px solid #0066cc;
             font-size: 1.1rem;
-            overflow: hidden;
+            overflow-x: auto;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #0066cc;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         th {
             background: #0066cc;
             color: white;
-            padding: 12px;
-            font-size: 1.2rem;
-            text-align: center;
+            width: 20%;
         }
 
         td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #f1f1f1;
+            width: 20%;
         }
 
         td:hover {
-            background-color: #f0f8ff;
+            background-color: #e6f0fa;
             cursor: pointer;
-        }
-
-        .scanner-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 40px;
-        }
-
-        video {
-            width: 100%;
-            border-radius: 12px;
-            max-height: 400px;
-            display: none;
         }
 
         .row-button-group {
@@ -126,7 +122,7 @@
             margin-top: 50px;
             text-align: center;
             font-size: 1rem;
-            color: #666;
+            color: #ffffff;
         }
 
         /* Адаптація для різних пристроїв */
@@ -134,116 +130,137 @@
             .container {
                 padding: 30px;
             }
-
             h2 {
                 font-size: 2rem;
             }
-
             .btn-custom {
                 font-size: 1.1rem;
             }
+            table {
+                font-size: 1rem;
+            }
+            th, td {
+                padding: 10px;
+            }
         }
 
-        /* Адаптація для ноутбуків */
         @media (max-width: 992px) {
             .container {
                 padding: 20px;
             }
-
             h2 {
                 font-size: 1.8rem;
             }
-
             .input-group input {
                 font-size: 1rem;
             }
-
             .btn-custom {
                 font-size: 1rem;
             }
+            table {
+                font-size: 0.9rem;
+            }
+            th, td {
+                padding: 8px;
+            }
         }
 
-        /* Адаптація для планшетів */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
-
-            .scanner-container {
-                flex-direction: column;
-            }
-
             .row-button-group {
                 flex-direction: column;
             }
-
             .row-button-group .btn-custom {
                 margin-bottom: 10px;
             }
-
             h2 {
                 font-size: 1.6rem;
             }
-
             .input-group input {
                 font-size: 0.9rem;
             }
+            table {
+                font-size: 0.8rem;
+            }
+            th, td {
+                padding: 6px;
+                width: 25%;
+            }
         }
 
-        /* Адаптація для мобільних телефонів */
         @media (max-width: 576px) {
             .container {
                 padding: 10px;
             }
-
             h2 {
                 font-size: 1.4rem;
             }
-
             .input-group input {
                 font-size: 0.9rem;
                 padding: 10px;
             }
-
             .btn-custom {
-                font-size: 1rem;
+                font-size: 0.8rem;
+            }
+            table {
+                font-size: 0.7rem;
+            }
+            th, td {
+                padding: 4px;
+                width: 30%;
             }
         }
     </style>
 </head>
 <body>
-<h2 class="section-header">📋 Список товарів</h2>
+<div class="container">
+    <h2 class="section-header">📋 Список товарів</h2>
 
-<div class="row-button-group">
-    <button class="btn-custom" >🔄 Оновити список</button>
-    <button class="btn-custom" >📤 Експорт в Excel</button>
-    <form action="/product/delete/${product.id}" method="post">>
-        <input type="submit" value="Видалити список">
-    </form>
+    <div class="row-button-group">
+        <button class="btn-custom" id="exportExcel">📤 Експорт в Excel</button>
+        <form action="/product/delete" method="post">
+            <input type="submit" class="btn-custom" value="🗑️ Видалити список">
+        </form>
+    </div>
+
+    <table class="table table-bordered text-center" id="productTable">
+        <thead>
+        <tr>
+            <th>Найменування</th>
+            <th>Кількість</th>
+            <th>Серійний номер</th>
+            <th>Ціна</th>
+            <th>Умови зберігання</th>
+        </tr>
+        </thead>
+        <tbody id="product_list">
+
+            <tr>
+                <td>${product.productName}</td>
+                <td>${product.productQuantity}</td>
+                <td>${product.serialNumber}</td>
+                <td>${product.productPrice}</td>
+                <td>${product.storageConditions}</td>
+            </tr>
+
+        </tbody>
+    </table>
 </div>
-
-<table class="table table-bordered text-center">
-    <thead>
-    <tr>
-
-        <th>Найменування </th>
-        ${product.productName}
-        <th>Кількість </th>
-        ${product.productQuantity}
-        <th>Серійний номер </th>
-        ${product.serialNumber}
-        <th>Ціна </th>
-        ${product.productPrice}
-        <th>Умови зберігання </th>
-        ${product.storageConditions}
-    </tr>
-    </thead>
-    <tbody id="product_list"></tbody>
-</table>
-
 
 <div class="footer">
-    <p>&copy; 2025 Облік товарів. Всі права захищені.</p>
+    <p>© 2025 Облік товарів. Всі права захищені.</p>
 </div>
+
+<!-- Підключення бібліотеки SheetJS -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+<script>
+    document.getElementById('exportExcel').addEventListener('click', function() {
+        const table = document.getElementById('productTable');
+        const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+        XLSX.writeFile(wb, 'список_товарів.xlsx');
+    });
+</script>
 </body>
 </html>
