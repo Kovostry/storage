@@ -65,36 +65,6 @@
             outline: none;
         }
 
-        table {
-            width: 100%;
-            margin-top: 30px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            border: 1px solid #0066cc;
-            font-size: 1.1rem;
-            overflow: hidden;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        th {
-            background: #0066cc;
-            color: white;
-            padding: 12px;
-            font-size: 1.2rem;
-            text-align: center;
-        }
-
-        td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #f1f1f1;
-        }
-
-        td:hover {
-            background-color: #f0f8ff;
-            cursor: pointer;
-        }
-
         .scanner-container {
             display: flex;
             justify-content: center;
@@ -106,6 +76,7 @@
             border-radius: 12px;
             max-height: 400px;
             display: none;
+            border: 2px solid #0066cc;
         }
 
         .row-button-group {
@@ -129,7 +100,7 @@
             margin-top: 50px;
             text-align: center;
             font-size: 1rem;
-            color: #666;
+            color: #ffffff;
         }
 
         /* Адаптація для різних пристроїв */
@@ -137,79 +108,63 @@
             .container {
                 padding: 30px;
             }
-
             h2 {
                 font-size: 2rem;
             }
-
             .btn-custom {
                 font-size: 1.1rem;
             }
         }
 
-        /* Адаптація для ноутбуків */
         @media (max-width: 992px) {
             .container {
                 padding: 20px;
             }
-
             h2 {
                 font-size: 1.8rem;
             }
-
             .input-group input {
                 font-size: 1rem;
             }
-
             .btn-custom {
                 font-size: 1rem;
             }
         }
 
-        /* Адаптація для планшетів */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
-
             .scanner-container {
                 flex-direction: column;
             }
-
             .row-button-group {
                 flex-direction: column;
             }
-
             .row-button-group .btn-custom {
                 margin-bottom: 10px;
             }
-
             h2 {
                 font-size: 1.6rem;
             }
-
             .input-group input {
                 font-size: 0.9rem;
             }
         }
 
-        /* Адаптація для мобільних телефонів */
         @media (max-width: 576px) {
             .container {
                 padding: 10px;
             }
-
             h2 {
                 font-size: 1.4rem;
             }
-
             .input-group input {
                 font-size: 0.9rem;
                 padding: 10px;
             }
-
             .btn-custom {
-                font-size: 1rem;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -228,10 +183,8 @@
     </div>
 
     <!-- Форма додавання товару -->
+    <h2 class="section-header"> Додавання нового товару</h2>
     <form action="/product/create" method="post">
-        <#--    <div class="input-group">-->
-        <#--        <input type="text" id="product_number" class="form-control" placeholder="🔢 Номер товару">-->
-        <#--    </div>-->
         <div class="input-group">
             <input type="text" class="form-control" placeholder="📦 Найменування товару" name="productName"/>
         </div>
@@ -241,28 +194,26 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="📄 Серійний номер" name="serialNumber"/>
         </div>
-        <#--    <div class="input-group">-->
-        <#--        <input type="date" id="arrival_date" class="form-control" placeholder="📅 Дата приходу">-->
-        <#--    </div>-->
         <div class="input-group">
             <input type="number" class="form-control" placeholder="💰 Ціна" name="productPrice"/>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" placeholder="📝 Умови зберігання" name="storageConditions"/>
         </div>
-
-        <input type="submit" value="➕ Додати товар">
+        <input type="submit" class="btn-custom w-100" value="➕ Додати товар">
     </form>
 
-    <#list products as product>
-        <div>
-             <a href="/product/${product.id}"> Переглянути товар</a>
+
+
+        <div class="input-group mb-3">
+
+            <button class="btn-custom" onclick="window.location.href='/product/${product.id}'">Переглянути товар</button>
         </div>
-    </#list>
+
 </div>
 
 <div class="footer">
-    <p>&copy; 2025 Облік товарів. Всі права захищені.</p>
+    <p>© 2025 Облік товарів. Всі права захищені.</p>
 </div>
 </body>
 </html>
